@@ -2,7 +2,7 @@
 # file: roles/hub_sqlite/tasks/main.yml
 
 - name: Install sqlite
-  package: name=sqllite state=present
+  package: name=sqlite state=present
 
 #- name: Install Helper utility to reset schema
 #  copy: src=reset_sqlite.sh dest=/usr/local/dream/reset_sqlite.sh

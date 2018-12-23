@@ -1,9 +1,21 @@
 ---
 # file: plays/provision_hub.yml
-
 - hosts: all
+  vars:
+    hub_hostname: unclaimed_hub
+    hub_user: pi
+    hub_group: pi
+    hub_google_project_id: unknown
+    hub_google_pubsub_topic: unknown
+    hub_batch_size: 20000
+    hub_dream_pubsub_timeout: unknown
+    hub_google_application_credentials: unknown
   roles: 
-    - hub_base
-    - hub_code
+    - ../roles/hub_common
+    - ../roles/hub_redis
+    - ../roles/hub_sqlite
+    - ../roles/hub_code
+    - ../roles/hub_config
+    - ../roles/hub_services
 
   

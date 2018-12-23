@@ -36,6 +36,10 @@ In Google Cloud Platform (GCP):
 
 ## Build `woke` Hub 
 
+## Seriously consider using ansible, see configurator/README.md.
+Seriously, it will save you an awful lot of typing and result in sobun/dream/ code running correctly.  A couple caveats, but they are better fixed there!
+
+
 ### Prepare the Raspberry Pi: 
 
 * Start with clean RasPi with a wifi connection

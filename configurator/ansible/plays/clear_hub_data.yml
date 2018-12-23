@@ -3,6 +3,13 @@
 
 - hosts: all
 - tasks:
+  - name: Stop dream services
+    systemd: name={{ item }} state=stopped enabled=True
+    with_items:
+      - dream-batcher
+      - dream-sniffer
+      - dream-syncer
+
   - name: Restart redis
     systemd: name= state=restarted
 
@@ -12,4 +19,11 @@
       flush_mode: all
   
   - name: Reset sqlite
-    command: /usr/local/dream/bin/reset_sqllite.sh
+    command: /usr/local/sobun/bin/reset_sqllite.sh
+
+  - name: Start dream services
+      systemd: name={{ item }} state=started enabled=True
+    with_items:
+      - dream-batcher
+      - dream-sniffer
+      - dream-syncer

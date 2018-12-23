@@ -1,6 +1,0 @@
----
-# file: group_vars/all.yml
-
-# @TODO: This probably needs cleaned up
-hub_user: pi
-hub_group: pi

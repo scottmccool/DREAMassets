@@ -1,41 +1,27 @@
 ---
 # file: roles/hub_code/tasks/main.yml
 
-- name: Create a hub project directory to try and mimic what Mike originally did
+- name: Create code directories
   file:
-    path: "{{ item }}"
+    path: "{{item}}"
     state: directory
     owner: "{{ hub_user }}"
     group: "{{ hub_group }}"
     mode: 0750
-    with_items:
-      - /usr/local/sobun
-      - /usr/local/sobun/config
-      - /usr/lcoal/sobun/helpers
+  with_items:
+    - /usr/local/sobun
+    - /usr/local/sobun/config
+    - /usr/local/sobun/helpers
 
 - name: Ensure there is an empty measurements.db
   file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0640
     
 - name: Copy sobun directory from this project
-  copy: src=../../../sobun/dream dest=/usr/local/sobun
+  copy: src=../../../../sobun dest=/usr/local owner={{ hub_user }} group={{ hub_group }}
+
+- name: Copy requirements.txt
+  copy: src=../../../../sobun/requirements.txt dest=/usr/local/sobun/requirements.txt
 
 - name: Install sobun specific prerequisites
   pip:
-    requirements: /usr/local/dream/sobun/requirements.txt
-
-
-- name: Manage systemd service and timer files
-  copy:
-    src: "{{ item }}"
-    dest: /etc/systemd/system/
-    with_items:
-      - dream-batcher.service
-      - dream-sniffer.service
-      - dream-syncer.service
-
-- name: Start services
-  systemd: name={{ item }} state=started
-  with_items:
-    - dream-batcher
-    - dream-sniffer
-    - dream-syncer
+    requirements: /usr/local/sobun/requirements.txt

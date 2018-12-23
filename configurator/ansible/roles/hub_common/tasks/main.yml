@@ -1,6 +1,14 @@
 ---
 # file: roles/hub_base/tasks/main.yml
+- name: Set hostname
+  hostname: 
+    name: "{{ hub_hostname }}"
 
+- name: Manage /etc/hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+  
 - name: Remove unwanted packages
   apt: name={{ item }} state=absent
   with_items:
@@ -25,6 +33,18 @@
     - virtualenv
     - google-cloud-pubsub 
     - bluepy
+
+#- name: Set net_raw capability on bluepi helper so it can run as non-root
+#  capabilities:
+#    path: /usr/local/lib/python2.7/dist-packages/bluepy/bluepy-helper
+#    capability: cap_net_raw
+#    state: present
+
+#- name: Set net_admin capability on bluepi helper so it can run as non-root
+#  capabilities:
+#    path: /usr/local/lib/python2.7/dist-packages/bluepy/bluepy-helper
+#    capability: cap_net_admin+eip
+#    state: present
 
 - name: Set memory overcommit
   sysctl:
