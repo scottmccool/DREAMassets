@@ -1,0 +1,5 @@
+---
+# file: roles/hub_redis/tasks/main.yml
+
+- name: Install redis
+  apt: name=redis-server state=present

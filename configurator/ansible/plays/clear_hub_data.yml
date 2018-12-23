@@ -1,0 +1,15 @@
+---
+# file: plays/reset_hub.yml
+
+- hosts: all
+- tasks:
+  - name: Restart redis
+    systemd: name= state=restarted
+
+  - name: Flush all from redis
+    redis:
+      command: flush
+      flush_mode: all
+  
+  - name: Reset sqlite
+    command: /usr/local/dream/bin/reset_sqllite.sh

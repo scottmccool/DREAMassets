@@ -1,0 +1,9 @@
+---
+# file: plays/provision_hub.yml
+
+- hosts: all
+  roles: 
+    - hub_base
+    - hub_code
+
+  

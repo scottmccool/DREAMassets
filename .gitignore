@@ -15,3 +15,6 @@ secrets/credentials.json
 \*~
 venv
 **/*.pid
+
+# ansible debug
+ansible/**/*.retry

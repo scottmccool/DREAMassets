@@ -1,0 +1,10 @@
+---
+# file: roles/hub_config/tasks/main.yml
+
+- name: Manage a systemd-sourced environment variable file
+  template: 
+    src: dream.env.j2
+    dest: /usr/local/sobun/config/dream.env
+    owner: {{ hub_user }}
+    group: {{ hub_group }}
+    mode: 0600

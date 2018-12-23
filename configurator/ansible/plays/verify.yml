@@ -1,0 +1,10 @@
+---
+# file: plays/verify.yml
+
+- name: Verify connectivity and prerequisites to manage hub
+  hosts: all
+  tasks:
+  - name: Connectivity test
+    copy:
+      content: "managed_by_configurator\n"
+      dest: /tmp/configurator.txt      

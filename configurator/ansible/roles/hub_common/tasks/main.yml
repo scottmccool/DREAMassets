@@ -1,0 +1,45 @@
+---
+# file: roles/hub_base/tasks/main.yml
+
+- name: Remove unwanted packages
+  apt: name={{ item }} state=absent
+  with_items:
+    - wolfram-engine
+
+- name: Install upstream prerequisites
+  apt: name={{ item }} state=present
+  with_items:
+    - libglib2.0-dev
+    - virtualenv
+    - python
+    - time
+    - speedtest-cli
+    - wondershaper
+    - wvdial 
+    - redis-server
+
+- name: Install python dependencies
+  pip: name={{ item }}
+  with_items:
+    - python-daemon
+    - virtualenv
+    - google-cloud-pubsub 
+    - bluepy
+
+- name: Set memory overcommit
+  sysctl:
+    name: vm.overcommit_memory
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configure logrotate
+  copy:
+    src: logrotate.conf
+    dest: /etc/logrotate.conf
+
+- name: Configure hub group
+  user: name={{ hub_group }}
+- name: Configure hub user
+  user: name={{ hub_user }} group={{ hub_group }}
