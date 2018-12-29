@@ -40,15 +40,16 @@ then
   echo "Confirmed.  Burning base image.  This will take a bit"
   #sudo dd bs=4M if="${RASPBIAN_MINIMAL_IMG_NAME}.img" of="${SD_DEVICE}" conv=fsync
   echo "Mounting burned image"
-  sudo mount "${SD_DEVICE}2" sd_card
+  sudo mount "${SD_DEVICE}1" sd_card/boot
+  sudo mount "${SD_DEVICE}2" sd_card/root
   echo "Customizing base image: enabling ssh"
-  sudo touch sd_card/ssh
+  sudo touch sd_card/boot/ssh
   echo "Customizing base image: Creating wifi configuration"
   read -e -p "Enter WiFi SSID: " SSID
   read -e -p "Enter WP-PSK (your wifi password): " PSK
-  sudo cp ${cwd}/wpa_supplicant_base sd_card/wpa_supplicant
-  sudo sed -i "s/your_real_wifi_ssid/${SSID}/g" sd_card/wpa_supplicant
-  sudo sed -i "s/your_real_password/${PSK}/g" sd_card/wpa_supplicant
+  sudo cp ${cwd}/wpa_supplicant_base sd_card/root/etc/wpa_supplicant/wpa_supplicant.conf
+  sudo sed -i "s/your_real_wifi_ssid/${SSID}/g" sd_card/root/etc/wpa_supplicant/wpa_supplicant.conf
+  sudo sed -i "s/your_real_password/${PSK}/g" sd_card/root/etc/wpa_supplicant/wpa_supplicant.conf
   echo "\n\n All Done!  Ejecting sd card.  Put it in a pi and boot it up, the run the ansible configurator, you've rebuilt from base OS!\n"
   echo "Press enter to complete."
   read anykey
