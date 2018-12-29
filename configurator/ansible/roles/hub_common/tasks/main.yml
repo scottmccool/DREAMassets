@@ -13,10 +13,21 @@
   apt: name="wolfram-engine" state=absent
   
 - name: Install upstream prerequisites
-  apt: name=['libgblib2.0-dev','time','speedtest-cli','wdial','redis-server','wondershaper'] state=present
+  apt: name="{{ packages }}" state=present
+  vars:
+    packages:
+        - libglib2.0-dev
+        - time
+        - speedtest-cli
+        - wondershaper
   
 - name: Install python dependencies
-  pip: name=['python-daemon','virtualenv'] executable=pip3
+  pip: name="{{ packages }}" executable=pip3
+  vars:
+    packages:
+        - python-daemon
+        - python3
+        - python3-pip
 
 #- name: Set net_raw capability on bluepi helper so it can run as non-root
 #  capabilities:

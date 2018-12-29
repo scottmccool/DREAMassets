@@ -18,6 +18,10 @@
         user: "{{ hub_user }}"
         state: present
         key: "{{ lookup('file', '../../../secrets/hub_credentials/hub_default.pub') }}"
+    - name: Update all packages (if you cared about the version, you should specify it in the play)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
 
   roles: 
     - ../roles/hub_common

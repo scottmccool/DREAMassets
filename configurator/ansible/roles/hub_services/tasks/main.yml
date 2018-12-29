@@ -1,5 +1,6 @@
 ---
 # file: roles/hub_services/tasks/main.yml
+
 - name: Manage systemd service and timer files
   copy: src={{ item }} dest=/etc/systemd/system/
   with_items:
@@ -10,7 +11,6 @@
 - name: Start services
   systemd: name={{ item }} state=started enabled=True
   with_items:
-    - redis
     - dream-batcher
     - dream-syncer
     - dream-sniffer@0

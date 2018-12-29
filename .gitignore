@@ -18,5 +18,9 @@ venv
 **/*.pid
 
 # ansible debug
-ansible/**/*.retry
-ansible/logs/
+configurator/ansible/**/*.retry
+configurator/ansible/logs/
+
+# raspbian base image stuff
+configurator/raspbian_minimal/cache
+

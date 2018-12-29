@@ -24,10 +24,15 @@
 - name: Copy requirements.txt
   copy: src=../../../../sobun/requirements.txt dest=/usr/local/sobun/requirements.txt
 
-- name: Install our system level requirements not specified in sobuns/requirements.txt
-  pip:  requirements=['bluepy','google-cloud-pubsub'] executable=pip3
 
 - name: Install sobun specific prerequisites
   pip:
-    requirements: /usr/local/sobun/requirements.txt
     executable: pip3
+    requirements: /usr/local/sobun/requirements.txt
+
+- name: Install our system level requirements not specified in sobuns/requirements.txt
+  pip:
+    executable: pip3
+    name:
+        - bluepy
+        - google-cloud-pubsub
