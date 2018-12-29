@@ -17,11 +17,17 @@
   file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0640
     
 - name: Copy sobun directory from this project
-  copy: src=../../../../sobun dest=/usr/local owner={{ hub_user }} group={{ hub_group }}
+  synchronize:
+    src: ../../../../sobun
+    dest: /usr/local
 
 - name: Copy requirements.txt
   copy: src=../../../../sobun/requirements.txt dest=/usr/local/sobun/requirements.txt
 
+- name: Install our system level requirements not specified in sobuns/requirements.txt
+  pip:  requirements=['bluepy','google-cloud-pubsub'] executable=pip3
+
 - name: Install sobun specific prerequisites
   pip:
     requirements: /usr/local/sobun/requirements.txt
+    executable: pip3

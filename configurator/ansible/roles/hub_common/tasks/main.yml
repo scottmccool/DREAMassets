@@ -10,29 +10,13 @@
     dest: /etc/hosts
   
 - name: Remove unwanted packages
-  apt: name={{ item }} state=absent
-  with_items:
-    - wolfram-engine
-
+  apt: name="wolfram-engine" state=absent
+  
 - name: Install upstream prerequisites
-  apt: name={{ item }} state=present
-  with_items:
-    - libglib2.0-dev
-    - virtualenv
-    - python
-    - time
-    - speedtest-cli
-    - wondershaper
-    - wvdial 
-    - redis-server
-
+  apt: name=['libgblib2.0-dev','time','speedtest-cli','wdial','redis-server','wondershaper'] state=present
+  
 - name: Install python dependencies
-  pip: name={{ item }}
-  with_items:
-    - python-daemon
-    - virtualenv
-    - google-cloud-pubsub 
-    - bluepy
+  pip: name=['python-daemon','virtualenv'] executable=pip3
 
 #- name: Set net_raw capability on bluepi helper so it can run as non-root
 #  capabilities:
@@ -61,5 +45,6 @@
 
 - name: Configure hub group
   user: name={{ hub_group }}
+
 - name: Configure hub user
   user: name={{ hub_user }} group={{ hub_group }}

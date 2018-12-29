@@ -3,11 +3,11 @@ Description=dream-sniffer
 After=bluetooth.service
 
 [Service]
-User=root
+User=pi
 Type=simple
 WorkingDirectory=/usr/local/sobun/
 EnvironmentFile=/usr/local/sobun/config/dream.env
-ExecStart=/usr/bin/python -m dream.sniffer %I'
+ExecStart=/usr/bin/python3 -m dream.sniffer %I
 Restart=always
 StandardInput=null
 StandardOutput=syslog

@@ -8,3 +8,5 @@
     owner: "{{ hub_user }}"
     group: "{{ hub_group }}"
     mode: 0600
+
+#- name: Set capability on bluepi helper so it can run as non-root

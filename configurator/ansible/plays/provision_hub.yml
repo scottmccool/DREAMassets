@@ -10,6 +10,15 @@
     hub_batch_size: 20000
     hub_dream_pubsub_timeout: unknown
     hub_google_application_credentials: unknown
+    ansible_python_interpreter: python3
+
+  pre_tasks:
+    - name: Ensure this users ssh-id is added to remote $hub_user authorized_keys (you probably want to ssh-add secrets/hub_credentials/hub_default)
+      authorized_key:
+        user: "{{ hub_user }}"
+        state: present
+        key: "{{ lookup('file', '../../../secrets/hub_credentials/hub_default.pub') }}"
+
   roles: 
     - ../roles/hub_common
     - ../roles/hub_redis
@@ -17,5 +26,8 @@
     - ../roles/hub_code
     - ../roles/hub_config
     - ../roles/hub_services
-
   
+#  post_tasks:
+#      - name: Reboot hub
+#        reboot:
+#          reboot_tiemout: 60

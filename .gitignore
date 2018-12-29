@@ -6,6 +6,7 @@ logs/*
 env.sh
 secrets/environment.py
 secrets/credentials.json
+secrets/hub_credentials/
 
 # python compiled files
 *.pyc
@@ -18,3 +19,4 @@ venv
 
 # ansible debug
 ansible/**/*.retry
+ansible/logs/
