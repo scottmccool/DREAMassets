@@ -20,7 +20,8 @@ echo "Remember, you only have to do this if you are making sure the ansible conf
 echo "If you just want to deploy the latest code, you should run a deployment playbook from ansible directory"
 echo "\n\n======\n\n"
 # Create cache if it isn't there, dont b fancy about it
-mkdir -p cache/raspbian_lite_base cache/raspbian_lite_base/sd_card > /dev/null 2>&1
+mkdir -p cache/raspbian_lite_base > /dev/null 2>&1
+mkdir -p cache/raspbian_lite_base/sd_card/{root,boot}
 
 cd cache/raspbian_lite_base
 
@@ -38,12 +39,16 @@ read -e -p "Type \"wipe_out_$SD_DEVICE\" to continue: " WIPEOUT_CONFIRMED
 if [ "$WIPEOUT_CONFIRMED" = "wipe_out_${SD_DEVICE}" ]
 then
   echo "Confirmed.  Burning base image.  This will take a bit"
-  #sudo dd bs=4M if="${RASPBIAN_MINIMAL_IMG_NAME}.img" of="${SD_DEVICE}" conv=fsync
+  sudo dd bs=4M if="${RASPBIAN_MINIMAL_IMG_NAME}.img" of="${SD_DEVICE}" conv=fsync
   echo "Mounting burned image"
+  echo
+  pwd
+  ls
+  echo
   sudo mount "${SD_DEVICE}1" sd_card/boot
   sudo mount "${SD_DEVICE}2" sd_card/root
   echo "Customizing base image: enabling ssh"
-  sudo touch sd_card/boot/ssh
+  sudo touch sd_card/root/ssh
   echo "Customizing base image: Creating wifi configuration"
   read -e -p "Enter WiFi SSID: " SSID
   read -e -p "Enter WP-PSK (your wifi password): " PSK
@@ -53,7 +58,9 @@ then
   echo "\n\n All Done!  Ejecting sd card.  Put it in a pi and boot it up, the run the ansible configurator, you've rebuilt from base OS!\n"
   echo "Press enter to complete."
   read anykey
-  sudo umount sd_card
+  sudo umount "${SD_DEVICE}1"
+  sudo umount "${SD_DEVICE}2"
+
 else
   echo "You entered $WIPEOUT_CONFIRMED, exiting"
   cd $cwd
