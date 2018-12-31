@@ -33,10 +33,10 @@
     executable: pip3
     requirements: /usr/local/sobun/requirements.txt
 
-
 - name: Ensure there is an empty measurements.db
   file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0640
 
 - name: Reset the sqlite measurements.db
-  command: /usr/bin/python3 -m dream.batcher --reset    
-  
+  command: /usr/bin/python3 -m dream.batcher --reset
+  args:
+    chdir: /usr/local/sobun

@@ -1,11 +1,6 @@
 # Automatic hub configuration (woker)
 
-### Preparation
-* <One time> Burn an empty raspbian stretch lite image to an SD card with a working wifi config
-  ** See raspbian_minimal/cache for details (attach sd card to workstation, note it's device id, know what wifi network you want to put it on and follow instructions)
-  ```
-  $ cd raspbian_minimal && ./flash_sdcard.sh
-  ```
+### Prerequisites
 * <Provisioning workstation only> Install ansible on your workstation (one time only, assumes ubuntu 18.04)
   ** ```
   $ sudo apt-get install python3-pip
@@ -13,20 +8,21 @@
   $ grep -q -F 'PATH=\$PATH:~/.local/bin' ~/.bashrc || echo 'PATH=$PATH:~/.local/bin' >> ~/.bashrc
   ```
 
-* Set up default hub ssh credentials (the base image password before provisioning is raspberry).  Keep this file, it's the only way into the hub!
-   ** ```
-$ ssh-keygen -t ed25519 -f secrets/hub_default -o -a 100 -C "default_configurator_user_from_secrets@configurator_host"
-$ ssh-add secrets/hub_credentials/hub_default
-$ 
+### Hub provisioning
+* Hub provisioning is a two stage process.  First, set up an sd card with a minimal Raspian stretch image.  It should connect to wifi and you should know it's default password (as of Stretch, it's pi/password).  Use raspbian_minimal to burn this very tiny base Raspbian.
+```
+cd raspbian_minimal && ./flash_sdcard.sh
 ```
 
+Will generate a fresh one for you, including prompting you for wifi information.
 
-### Configure a single hub
+* Second, provision the DREAM framework to the hub (use Ansible to configure the hub as we'd like it, including starting up dream-sniffer, dream-batcher, and dream-syncer.  The project ships with a sample inventory in hub_inventories which you should copy to another file and list all your hosts (then specify on the command line below):
+
 ```
-$ ansible-playbook plays/provision_hub.yml -i 192.168.0.19, -u pi -k --become --extra-vars "hub_hostname=mccool_hub_01 hub_google_pubsub_topic=mccool_test_topic hub_google_project_id=mccool_gcp_project hub_google_application_credentials=REDACTED"
+$ ansible-playbook -i hub_inventories/single_development_hub.ini plays/provision_hub.yml 
 ```
 
-This will log into an empty raspbi at 192.168.0.19 as username pi.  On the first run you may need to add -k to the ansible command in order to be prompted for a password before the key is installed.  It's however you froze the base OS image.  Once it logs in, it will add an ssh key as generated above and future runs won't need interaction. It will configure it to be a receiver hub named mccool_hub_01, using a pubsub topic of mccool_test_topic, a project id of mccool_gcp_project, and... Well you get the point, replace anything after hub.yml with what you want to change.  After the first run, only ssh keys may be used to log in.
+This will log into an empty raspbi at 192.168.0.19 as username pi.  On the first run you may need to add -k to the ansible command in order to be prompted for a password before the key is installed.  It's however you froze the base OS image.  Once it logs in, it will add an ssh key you specified above (by using the development hub profile, which has an insecure SSH key checked in).
 
 In the future this will support multiple hubs at once, and let you define sets of hubs to be provisioned and their secrets/variables.  For now we're just doing this one at a time.
 
