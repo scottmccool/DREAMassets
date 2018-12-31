@@ -3,25 +3,45 @@
 - hosts: all
   vars:
     hub_hostname: unclaimed_hub
-    hub_user: pi
-    hub_group: pi
+    hub_user: dreamer
+    hub_group: dreamer
     hub_google_project_id: unknown
     hub_google_pubsub_topic: unknown
     hub_batch_size: 20000
     hub_dream_pubsub_timeout: unknown
     hub_google_application_credentials: unknown
     ansible_python_interpreter: python3
-
+  
   pre_tasks:
+    - name: Configure hub group
+      group: name={{ hub_group }}
+
+    - name: Configure hub user
+      user: name={{ hub_user }} group={{ hub_group }} password="!" shell="/bin/bash"
+
     - name: Ensure this users ssh-id is added to remote $hub_user authorized_keys (you probably want to ssh-add secrets/hub_credentials/hub_default)
       authorized_key:
         user: "{{ hub_user }}"
         state: present
         key: "{{ lookup('file', '../../../secrets/hub_credentials/hub_default.pub') }}"
+
     - name: Update all packages (if you cared about the version, you should specify it in the play)
       apt:
         update_cache: yes
         cache_valid_time: 3600
+   
+    - name: Allow hub user to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: "^{{ hub_user }}"
+        line: "{{ hub_user }} ALL=(ALL) NOPASSWD: ALL"
+    
+    - name: Disable account passwords, only ssh key will work
+      user: name="{{ item }}" password="!"
+      with_items:
+        - root
+        - pi
 
   roles: 
     - ../roles/hub_common

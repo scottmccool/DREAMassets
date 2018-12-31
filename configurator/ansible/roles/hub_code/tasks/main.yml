@@ -13,9 +13,6 @@
     - /usr/local/sobun/config
     - /usr/local/sobun/helpers
 
-- name: Ensure there is an empty measurements.db
-  file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0640
-    
 - name: Copy sobun directory from this project
   synchronize:
     src: ../../../../sobun
@@ -24,15 +21,22 @@
 - name: Copy requirements.txt
   copy: src=../../../../sobun/requirements.txt dest=/usr/local/sobun/requirements.txt
 
-
-- name: Install sobun specific prerequisites
-  pip:
-    executable: pip3
-    requirements: /usr/local/sobun/requirements.txt
-
 - name: Install our system level requirements not specified in sobuns/requirements.txt
   pip:
     executable: pip3
     name:
         - bluepy
         - google-cloud-pubsub
+
+- name: Install sobun specific prerequisites
+  pip:
+    executable: pip3
+    requirements: /usr/local/sobun/requirements.txt
+
+
+- name: Ensure there is an empty measurements.db
+  file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0640
+
+- name: Reset the sqlite measurements.db
+  command: /usr/bin/python3 -m dream.batcher --reset    
+  
