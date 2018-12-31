@@ -31,7 +31,10 @@
     - ../roles/hub_config
     - ../roles/hub_services
   
-#  post_tasks:
-#      - name: Reboot hub
-#        reboot:
-#          reboot_tiemout: 60
+  post_tasks:
+      - name: Reboot hub
+        reboot:
+          reboot_timeout: 60
+      - name: "Completed"
+        debug:
+          msg: "{{ hub_hostname }} has been provisioned, you may deploy code changes using update_hub.yml for a faster experience"
