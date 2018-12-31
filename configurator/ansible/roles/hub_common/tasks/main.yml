@@ -20,26 +20,25 @@
         - time
         - speedtest-cli
         - wondershaper
+        - python3
+        - python3-dev
+
   
 - name: Install python dependencies
   pip: name="{{ packages }}" executable=pip3
   vars:
     packages:
         - python-daemon
-        - python3
-        - python3-pip
 
+# This should work, instead the next task will just shell out to do it 
 #- name: Set net_raw capability on bluepi helper so it can run as non-root
 #  capabilities:
-#    path: /usr/local/lib/python2.7/dist-packages/bluepy/bluepy-helper
-#    capability: cap_net_raw
+#    path: /usr/local/lib/python3.5/dist-packages/bluepy/bluepy-helper
+#    capability: ["cap_net_raw","cap_net_admin+eip"]
 #    state: present
 
-#- name: Set net_admin capability on bluepi helper so it can run as non-root
-#  capabilities:
-#    path: /usr/local/lib/python2.7/dist-packages/bluepy/bluepy-helper
-#    capability: cap_net_admin+eip
-#    state: present
+- name: Set net_raw and net_admin capabilities on bluepy-helper so that sniffer can start
+  command: /sbin/setcap cap_net_admin,cap_net_raw+eip /usr/local/lib/python3.5/dist-packages/bluepy/bluepy-helper
 
 - name: Set memory overcommit
   sysctl:
