@@ -8,6 +8,23 @@
     - dream-sniffer@.service
     - dream-syncer.service
 
+- name: Create log directory
+  file:
+    path: /usr/local/sobun/log
+    state: directory
+    owner: "{{ hub_user }}"
+    group: "{{ hub_group }}"
+
+- name: Copy syslog config drop in file over
+  copy:
+    dest: /etc/rsyslog.d/dream-services.conf
+    src: syslog_dream-services.conf
+
+- name: Copy logrotate config drop in file over
+  copy:
+    dest: /etc/logrotate.d/dream-services
+    src: logrotate_dream-services.conf
+
 - name: Start services
   systemd: name={{ item }} state=started enabled=True
   with_items:
