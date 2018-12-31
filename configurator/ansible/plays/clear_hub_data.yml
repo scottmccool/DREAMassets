@@ -2,29 +2,36 @@
 # file: plays/reset_hub.yml
 
 - hosts: all
-- tasks:
+  become: True
+  tasks:
   - name: Stop dream services
     systemd: name={{ item }} state=stopped enabled=True
     with_items:
       - dream-batcher
-      - dream-sniffer
       - dream-syncer
+      - dream-sniffer@0
+      - dream-sniffer@1
+      - dream-sniffer@2
 
   - name: Restart redis
     systemd: name= state=restarted
 
   - name: Flush all from redis
-    redis:
-      command: flush
-      flush_mode: all
-  
-  - name: Reset sqlite
-    command: /usr/local/sobun/bin/reset_sqllite.sh
+    command: echo "flushall" | redis-cli
+
+  - name: Reset the sqlite measurements.db
+    command: /usr/bin/python3 -m dream.batcher --reset
+    args:
+      chdir: /usr/local/sobun
+
+  - name: Clear dream-services.log
+    command: echo > /usr/local/sobun/log/dream-services.log
 
   - name: Start dream services
     systemd: name={{ item }} state=started enabled=True
     with_items:
       - dream-batcher
-      - dream-sniffer
       - dream-syncer
-
+      - dream-sniffer@0
+      - dream-sniffer@1
+      - dream-sniffer@2

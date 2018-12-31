@@ -1,13 +1,15 @@
 [Unit]
-Description=dream-sniffer
-After=bluetooth.service
+Description=dream-syncer
+After=network-online.target
+Requires=network-online.target
+
 
 [Service]
-User=dreamer
+User={{ hub_user }}
 Type=simple
 WorkingDirectory=/usr/local/sobun/
 EnvironmentFile=/usr/local/sobun/config/dream.env
-ExecStart=/usr/bin/python3 -m dream.sniffer %I
+ExecStart=/bin/bash -c 'exec ./venv/bin/celery worker -A dream.syncer -c 2'
 Restart=always
 StandardInput=null
 StandardOutput=syslog

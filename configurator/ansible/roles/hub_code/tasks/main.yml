@@ -18,6 +18,13 @@
     src: ../../../../sobun
     dest: /usr/local
 
+- name: Set recursive ownership of synced files
+  file:
+    path: /usr/local/sobun
+    owner: "{{ hub_user }}"
+    group: "{{ hub_group }}"
+    recurse: True
+
 - name: Copy requirements.txt
   copy: src=../../../../sobun/requirements.txt dest=/usr/local/sobun/requirements.txt
 
@@ -34,9 +41,10 @@
     requirements: /usr/local/sobun/requirements.txt
 
 - name: Ensure there is an empty measurements.db
-  file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0640
+  file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0660
 
 - name: Reset the sqlite measurements.db
   command: /usr/bin/python3 -m dream.batcher --reset
+  become_user: "{{ hub_user }}"
   args:
     chdir: /usr/local/sobun

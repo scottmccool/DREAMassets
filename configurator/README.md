@@ -26,6 +26,12 @@ This will log into an empty raspbi at 192.168.0.19 as username pi.  On the first
 
 In the future this will support multiple hubs at once, and let you define sets of hubs to be provisioned and their secrets/variables.  For now we're just doing this one at a time.
 
+### Clear data from hub and restart services
+```
+$ ansible-playbook -i hub_inventories/single_development_hub.ini plays/clear_hub_data.yml
+```
+
+
 ### Logging into a configured pi
 ```
 ssh-add secrets/hub_credentials/hub_default

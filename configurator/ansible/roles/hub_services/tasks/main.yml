@@ -2,7 +2,7 @@
 # file: roles/hub_services/tasks/main.yml
 
 - name: Manage systemd service and timer files
-  copy: src={{ item }} dest=/etc/systemd/system/
+  template: src={{ item }} dest=/etc/systemd/system/
   with_items:
     - dream-batcher.service
     - dream-sniffer@.service

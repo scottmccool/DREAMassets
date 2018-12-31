@@ -5,7 +5,7 @@ Requires=network-online.target
 
 
 [Service]
-User=dreamer
+User={{ hub_user }}
 Type=simple
 WorkingDirectory=/usr/local/sobun/
 EnvironmentFile=/usr/local/sobun/config/dream.env

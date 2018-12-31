@@ -29,6 +29,7 @@
     packages:
         - python-daemon
         - bluepy
+        - redis
 
 # This should work, instead the next task will just shell out to do it 
 #- name: Set net_raw capability on bluepi helper so it can run as non-root
