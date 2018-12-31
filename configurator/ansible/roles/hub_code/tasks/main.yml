@@ -43,8 +43,7 @@
 - name: Ensure there is an empty measurements.db
   file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0660
 
-- name: Reset the sqlite measurements.db
+- name: Have dream.batcher initialize the db
   command: /usr/bin/python3 -m dream.batcher --reset
-  become_user: "{{ hub_user }}"
   args:
     chdir: /usr/local/sobun
