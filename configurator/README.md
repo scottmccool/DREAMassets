@@ -2,7 +2,8 @@
 
 ### Prerequisites
 * <Provisioning workstation only> Install ansible on your workstation (one time only, assumes ubuntu 18.04)
-  ** ```
+  ** 
+  ```
   $ sudo apt-get install python3-pip
   $ pip3 install --user ansible
   $ grep -q -F 'PATH=\$PATH:~/.local/bin' ~/.bashrc || echo 'PATH=$PATH:~/.local/bin' >> ~/.bashrc
