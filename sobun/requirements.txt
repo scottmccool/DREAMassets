@@ -1,5 +1,4 @@
 # This requirements file sets up the virtual environment for python 
--i https://pypi.org/simple
 amqp==2.3.2
 billiard==3.5.0.4
 bluepy==1.2.0; sys_platform=="linux2"

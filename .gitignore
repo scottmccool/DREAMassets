@@ -24,3 +24,8 @@ configurator/ansible/logs/
 # raspbian base image stuff
 configurator/raspbian_minimal/cache
 
+# python build artifacts
+sobun/build/dist
+sobun/build/lib
+*.egg-info
+
