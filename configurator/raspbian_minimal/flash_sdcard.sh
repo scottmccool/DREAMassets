@@ -38,9 +38,9 @@ read -e -p "Device path to wipe out (<enter> for __${DEFAULT_SD_DEVICE}__: " -i 
 read -e -p "Type \"wipe_out_$SD_DEVICE\" to continue: " WIPEOUT_CONFIRMED
 if [ "$WIPEOUT_CONFIRMED" = "wipe_out_${SD_DEVICE}" ]
 then
-  echo "Confirmed.  Burning base image.  This will take a bit"
-  sudo dd bs=4M if="${RASPBIAN_MINIMAL_IMG_NAME}.img" of="${SD_DEVICE}" conv=fsync
-  echo "Mounting burned image"
+  echo "\n\n\n================\n\nConfirmed.  Burning base image.  This will take a bit"
+  #sudo dd bs=4M if="${RASPBIAN_MINIMAL_IMG_NAME}.img" of="${SD_DEVICE}" conv=fsync
+  echo "\n===============\n Done! \n\nMounting burned image"
   echo
   pwd
   ls
@@ -49,6 +49,7 @@ then
   sudo mount "${SD_DEVICE}2" sd_card/root
   echo "Customizing base image: enabling ssh"
   sudo touch sd_card/root/ssh
+  sudo touch sd_card/boot/ssh
   echo "Customizing base image: Creating wifi configuration"
   read -e -p "Enter WiFi SSID: " SSID
   read -e -p "Enter WP-PSK (your wifi password): " PSK
