@@ -12,11 +12,14 @@
     - /usr/local/sobun
     - /usr/local/sobun/config
     - /usr/local/sobun/helpers
+    - /usr/local/sobun/dist
 
-- name: Copy sobun directory from this project
-  synchronize:
-    src: ../../../../sobun
-    dest: /usr/local
+- name: Copy packaged code over
+  copy: src="../../../../sobun/dist/{{ dream_package_name }}" dest=/usr/local/sobun/dist/
+
+- name: Grab prerequisites from source and copy over (@TODO this needs refactored)
+  copy: src="../../../../sobun/requirements.txt" dest="/usr/local/sobun/dist/requirements.txt"
+
 
 - name: Set recursive ownership of synced files
   file:
@@ -25,20 +28,15 @@
     group: "{{ hub_group }}"
     recurse: True
 
-- name: Copy requirements.txt
-  copy: src=../../../../sobun/requirements.txt dest=/usr/local/sobun/requirements.txt
-
-- name: Install our system level requirements not specified in sobuns/requirements.txt
+- name: Install sobun specific prerequisites (pip would do this, but weird errors)
   pip:
     executable: pip3
-    name:
-        - bluepy
-        - google-cloud-pubsub
+    requirements: /usr/local/sobun/dist/requirements.txt
 
-- name: Install sobun specific prerequisites
+- name: Install package
   pip:
-    executable: pip3
-    requirements: /usr/local/sobun/requirements.txt
+    name: "/usr/local/sobun/dist/{{ dream_package_name }}"
+
 
 - name: Ensure there is an empty measurements.db
   file: name=/usr/local/sobun/measurements.db state=touch owner={{ hub_user }} group={{ hub_group }} mode=0660
