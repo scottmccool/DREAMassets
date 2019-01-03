@@ -28,4 +28,4 @@ configurator/raspbian_minimal/cache
 sobun/build/dist
 sobun/build/lib
 *.egg-info
-
+dist/
