@@ -10,6 +10,9 @@
   ```
 * Build a python archive of the code you want by following instructions in ../sobun/build/README.md (set the inventory variable according to version you built/want to deploy)
 
+### Cloud configuration
+* This project assumes you want data from hubs sent to a google cloud pubsub topic.  Configure it in conifgurator/cloud_receiver before proceeding
+* You will need data from this step to configue a hub!
 
 ### Hub provisioning
 * Hub provisioning is a two stage process.  First, set up an sd card with a minimal Raspian stretch image.  It should connect to wifi and you should know it's default password (as of Stretch, it's pi/password).  Use raspbian_minimal to burn this very tiny base Raspbian.
