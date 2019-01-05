@@ -1,17 +1,14 @@
 Deploys google cloud services to receive sensor data from hubs
 
-Configured via Terraform, developed on Terraform .11.11
+This should really be some terraform modules.
 
-Assumes you have followed: https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform#create-the-terraform-service-account
+Instead, make sure you set up a google cloud project.
 
-up to the point terraform init works.
+Log into it:
+$  gcloud auth login --project "<your project>"
 
-Please note this alpha version is pretty hard coded.  Set a prefix for the resource names and that's about all you can do!
+And run 
+$ ./bootstrap.sh
 
+It will spit out credentials you will now pass to ansible for hub configuration (by copying a secrets/ file over and by specifying topic and project name variables; it'll tell you what to do)
 
-Usage:
-
- Configure master provider credentials
- ```
- $ terraform apply
- ```
