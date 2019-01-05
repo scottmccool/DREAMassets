@@ -1,0 +1,8 @@
+---
+# file: plays/update_dream_config.yml
+- hosts: all
+  become: True
+  vars:
+    ansible_python_interpreter: python3
+  roles: 
+    - ../roles/hub_config

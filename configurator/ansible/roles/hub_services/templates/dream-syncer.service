@@ -17,6 +17,8 @@ StandardError=syslog
 SyslogIdentifier=%n
 KillMode=mixed
 TimeoutStopSec=5
+RestartSec=5
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

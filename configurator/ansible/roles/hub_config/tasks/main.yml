@@ -9,4 +9,7 @@
     group: "{{ hub_group }}"
     mode: 0600
 
+- name: Copy hub google cloud credentials to config
+  copy: src="../../../../secrets/hub_credentials/{{ hub_google_application_credentials }}" dest="/usr/local/sobun/config/{{ hub_google_application_credentials }}"
+
 #- name: Set capability on bluepi helper so it can run as non-root

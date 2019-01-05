@@ -4,5 +4,17 @@
   become: True
   vars:
     ansible_python_interpreter: python3
+  pretasks:
+    - name: Stop services
+      systemd: name={{ item }} state=stopped enabled=False
+      with_items:
+        - dream-batcher
+        - dream-syncer
+        - dream-sniffer@0
+        - dream-sniffer@1
+        - dream-sniffer@2
+      ignore_errors: True
   roles: 
     - ../roles/hub_code
+    - ../roles/hub_services
+  
