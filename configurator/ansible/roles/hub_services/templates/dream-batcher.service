@@ -9,6 +9,11 @@ User={{ hub_user }}
 Type=simple
 WorkingDirectory=/usr/local/sobun/
 EnvironmentFile=/usr/local/sobun/config/dream.env
+Environment=GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+Environment=GOOGLE_PUBSUB_TOPIC=${GOOGLE_PUBSUB_TOPIC}
+Environment=BATCH_SIZE=${BATCH_SIZE}
+Environment=DREAM_PUBSUB_TIMEOUT=${DREAM_PUBSUB_TIMEOUT}
+Environment=GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
 ExecStart=/usr/bin/python3 -m dream.batcher
 Restart=always
 StandardInput=null

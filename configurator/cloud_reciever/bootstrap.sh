@@ -76,7 +76,7 @@ echo "The topic name is: ${TOPIC}"
 
 echo "To provision a hub to use this:"
 echo
-echo "cp secrets/hub-${TOPIC}-publisher.json ../../secrets/"
+echo "cp secrets/hub-${TOPIC}-publisher.json ../../secrets/hub_credentials/"
 echo "cd ../ansible"
 echo "ansible-playbook plays/provision_hub.yml -i hub_inventories/single_development_hub.ini --extra-vars=\"hub_google_project_id=${PROJECT} hub_google_pubsub_topic=${TOPIC} hub_google_application_credentials=hub-${TOPIC}-publisher.json\""
 echo

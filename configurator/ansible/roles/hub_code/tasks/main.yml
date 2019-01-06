@@ -7,12 +7,13 @@
     state: directory
     owner: "{{ hub_user }}"
     group: "{{ hub_group }}"
-    mode: 0750
+    mode: 0755
   with_items:
     - /usr/local/sobun
     - /usr/local/sobun/config
     - /usr/local/sobun/helpers
     - /usr/local/sobun/dist
+    - /usr/local/sobun/log
 
 - name: Copy packaged code over
   copy: src="../../../../sobun/dist/{{ dream_package_name }}" dest=/usr/local/sobun/dist/

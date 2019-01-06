@@ -23,16 +23,29 @@ SCOPES = ['https://www.googleapis.com/auth/pubsub']
 TOPIC = "projects/{}/topics/{}".format(config.GOOGLE_PROJECT_ID, config.GOOGLE_PUBSUB_TOPIC)
 
 def send_batch(payload):
-    data = {
-        "messages": [
-            {
-                "data": base64.b64encode(payload),
-                "attributes": {
-                    "hub_id": HUB_ID
+    try:
+        data = base64.b64encode(payload)
+    except:
+        data = base64.b64encode(payload.encode())
+        print("Could not call base64.b64encode on original payload, which was:\n%s\n"%(payload))
+    try:
+        data = {
+            "messages": [
+                {
+                    "data": data,
+                    "attributes": {
+                        "hub_id": HUB_ID,
+                        "sniffer_version": "0.0.1",
+                        "batcher_version": "0.0.1"
+                    }
                 }
-            }
-        ]
-    }
+            ]
+        }
+    except Exception as e:
+        print("Error building data object from payload. {}".format(e))
+        print("Payload was\n----\n{}\n----".format(payload))
+        print("Data was\n----\n{}\n----".format(data))
+        raise
 
     # service account file is the same as the secret json file
     SERVICE_ACCOUNT_FILE = config.GOOGLE_APPLICATION_CREDENTIALS

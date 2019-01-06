@@ -7,7 +7,7 @@ from celery import Celery
 
 from dream.batcher import dbconnect, insert
 
-app = Celery(broker_url = 'redis://localhost:6379/0')
+app = Celery('tasks', broker = 'redis://localhost:6379/0')
 # use the celeryconfig.py file to get the queue server and other settings 
 
 #app.config_from_object('celeryconfig')  

@@ -1,6 +1,5 @@
 ---
 # file: plays/reset_hub.yml
-
 - hosts: all
   become: True
   tasks:
@@ -25,7 +24,7 @@
       chdir: /usr/local/sobun
 
   - name: Clear dream-services.log
-    command: echo > /usr/local/sobun/log/dream-services.log
+    command: echo > /usr/local/sobun/log/dream-*.log
 
   - name: Start dream services
     systemd: name={{ item }} state=started enabled=True

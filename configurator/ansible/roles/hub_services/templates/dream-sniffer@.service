@@ -6,7 +6,6 @@ After=bluetooth.service
 User={{ hub_user }}
 Type=simple
 WorkingDirectory=/usr/local/sobun/
-EnvironmentFile=/usr/local/sobun/config/dream.env
 ExecStart=/usr/bin/python3 -m dream.sniffer %I
 Restart=always
 StandardInput=null
