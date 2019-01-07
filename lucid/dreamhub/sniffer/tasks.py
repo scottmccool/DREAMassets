@@ -32,8 +32,8 @@ def sniff(hci=0):
     discarded = 0
     try:
         scanner = Scanner().withDelegate(DefaultDelegate())
-        print("Scanning for 29 seconds")
-        devices = scanner.scan(29)
+        print("Scanning for 9 seconds")
+        devices = scanner.scan(9)
         fujitsu_packet = re.compile(r'010003000300')
         print("Filtering %d devices found during scan" % (len(devices)))
         for dev in devices:
@@ -46,7 +46,7 @@ def sniff(hci=0):
                 discarded += 1
                 print("Could not find fujitsu maufacturing string, discarding:\n%s"%(packet))
     except Exception as e:
-        print("Exception in sniffer loop, better luck next time (pub: %d, disc: %d)"%(published,discarded))
+        print("Exception in sniffer loop (%s), better luck next time (pub: %d, disc: %d)\n"%(e,published,discarded))
         print(e)
     return(published,discarded)
 
