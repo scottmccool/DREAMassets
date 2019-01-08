@@ -9,8 +9,9 @@ Ships dreamhub python module which contains a celery app (pointed at localhost r
     sniffer.sniff -> Read BTLE ads, find fujitsu tags, call publisher.publish with match
     publisher.publish -> Write sensor tag to google cloud pubsub topic
 Dreamhub python module also contains a helper script to submit scan requests forever (should this be embedded in the worker app?)
+```
   $ python3 minder.py
-
+```
 
 It's currently missing a bunch of helper scripts, but you can:
 # Install the prerequisites
@@ -20,14 +21,17 @@ $ pip3 install -r requirements.txt
 $ sudo docker run --net=host redis 
 ```
 
-# Run a celery worker on all queues
+# Run a celery worker on default queues
 ```
-$ celery -A dreamhub.celery worker --loglevel info -Q default,sniffer,publisher
+$ celery -A dreamhub.celery worker --loglevel info -Q default,publisher -E
 ```
+
 # Run a helper script which will submit sniff requests forever
 ```
 $ python3 minder.py
 ```
+
+# Observe results of publish (watch the celery logs, check pubsub, etc)
 
 # Install flower and monitor message flow
 ```
@@ -35,3 +39,7 @@ $ pip3 install flower
 $ flower -b redis://localhost/0 --results-backend='redis://localhost/0'
 ```
 (See http://localhost:5555/ for a UI)
+
+
+# Todo: launch scanners on additional hcis
+# Fix google pubsub logic and pick a better fallback
