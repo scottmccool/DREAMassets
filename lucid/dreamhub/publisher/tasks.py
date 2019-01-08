@@ -1,13 +1,15 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
+
 import os
 import socket
 import time
 import json
-from dreamhub import dreamconfig
 from google.oauth2 import service_account
 import googleapiclient.discovery
 import base64
+
+from dreamhub import dreamconfig
 
 # During setup, we set the RasPi's hostname to the Hub ID  
 HUB_ID = socket.gethostname()
@@ -18,8 +20,16 @@ SERVICE_ACCOUNT_FILE = dreamconfig.GOOGLE_APPLICATION_CREDENTIALS
 credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
 #@app.task(base=Batches,flush_every=100, flush_interval=60)
-@shared_task(name="publisher.publish", rate_limit=1, timeout=5)
+@shared_task
 def publish(payload):
+    f = open("/tmp/dreamhub_publisher_readings","w+")
+    f.write(payload)
+    f.write("\n")
+    f.close()
+    
+
+@shared_task(rate_limit=1, timeout=5)
+def publish_to_google(payload):
     # @TODO clean up encoding!
     try:
         enc = base64.b64encode(json.dumps(payload).encode('utf-8'))

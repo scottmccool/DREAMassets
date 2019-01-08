@@ -1,22 +1,28 @@
-
 from __future__ import absolute_import, unicode_literals
 from celery import Celery
+from celery.signals import worker_ready
 
-app = Celery('dreamhub_worker',
+from dreamhub.publisher.tasks import publish
+from dreamhub.sniffer.tasks import sniff
+#from dreamhub.publisher.tasks import publish
+#from dreamhub.sniffer.tasks import sniff
+
+app = Celery("dreamhub",
              broker='redis://localhost:6379/0',
-             backend='redis://localhost:6379/0',
-             include=['dreamhub.publisher.tasks','dreamhub.sniffer.tasks'])
-app.conf.task_default_queue = 'default'
-CELERY_ROUTES = {
-    '*sniff*': {'queue': 'sniffer'},
-    '*publish*': {'queue': 'publisher'},
-}
-
-# Optional configuration, see the application user guide.
-app.conf.update(
-    result_expires=3600,
+             result_backend='redis://localhost:6379/0'
 )
 
-import time
+app.conf.timezone = 'UTC'
+
+# Start a sniffer with default arguments every minute
+app.conf.beat_schedule = {
+    'sniff-every-minute': {
+        'task': 'dreamhub.sniffer.tasks.sniff',
+        'schedule': 60.0
+    },
+}
+
+
+# Run the worker
 if __name__ == '__main__':
     app.start()

@@ -29,3 +29,6 @@ sobun/build/dist
 sobun/build/lib
 *.egg-info
 dist/
+__pycache__
+*.pyc
+**/celerybeat-schedule

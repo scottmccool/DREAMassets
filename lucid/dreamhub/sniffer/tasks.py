@@ -26,21 +26,22 @@ from bluepy.btle import Scanner, DefaultDelegate
 # Sniff BLE advertisments, filter for fujitsu tag, and call publisher.publish on anything
 # that matches.  Intended to be called from minder.py
 from dreamhub.publisher.tasks import publish
-@shared_task(name="sniffer.sniff",bind=True,rate_limit=1, timeout=60)
-def sniff(hci=0):
+
+@shared_task(rate_limit=1, timeout=60)
+def sniff(hci=0, scantime=50):
     published = 0
     discarded = 0
     try:
         scanner = Scanner().withDelegate(DefaultDelegate())
-        print("Scanning for 9 seconds")
-        devices = scanner.scan(9)
+        print("Scanning for %d seconds" % (scantime))
+        devices = scanner.scan(float(scantime))
         fujitsu_packet = re.compile(r'010003000300')
         print("Filtering %d devices found during scan" % (len(devices)))
         for dev in devices:
             packet = extract_packet_from_bleAdvertisement(dev)
             if re.search(fujitsu_packet, packet['mfr_data']):
                 print("Publishing packet: %s"%(packet))
-                publish(packet)
+                publish.app.send_task('dreamhub.publisher.tasks.publish', [packet], queue='publisher')
                 published += 1
             else:
                 discarded += 1
