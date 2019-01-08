@@ -6,5 +6,5 @@ google-api-python-client==1.7.4
 google-cloud-bigquery==1.6.0
 kombu==4.2.1
 pytz==2018.5
-redis==3.0.1
+redis==2.10.6
 vine==1.2.0

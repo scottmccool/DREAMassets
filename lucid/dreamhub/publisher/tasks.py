@@ -22,8 +22,9 @@ credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCO
 #@app.task(base=Batches,flush_every=100, flush_interval=60)
 @shared_task
 def publish(payload):
-    f = open("/tmp/dreamhub_publisher_readings","w+")
-    f.write(payload)
+    p = str(payload)
+    f = open("/tmp/dreamhub_publisher_readings","a")
+    f.write(p)
     f.write("\n")
     f.close()
     
