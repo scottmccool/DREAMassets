@@ -61,14 +61,6 @@ fi
 
 gcloud beta pubsub topics add-iam-policy-binding ${TOPIC} --member=serviceAccount:dream-hub@${PROJECT}.iam.gserviceaccount.com --role roles/pubsub.publisher
 
-echo
-echo "-----"
-echo "Creating cloud function to persist data from pubsub"
-echo "-----"
-
-
-
-
 
 echo "That's all I know how to do.  You should ship secrets/hub-publisher.json to the Raspberry pi's via the configurator code."
 echo "The project name is: ${PROJECT}"

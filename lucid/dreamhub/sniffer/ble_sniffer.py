@@ -9,7 +9,7 @@ from bluepy.btle import Scanner, DefaultDelegate
 import signal
 import re
 import time
-from dreamhub.publisher.tasks import publish
+from dreamhub.publisher.tasks import publish_observation
 
 # Possible scanning mode, called by sniffer task
 def sniffForever(hci):
@@ -48,7 +48,7 @@ class PublishOnlyFujitsu(DefaultDelegate):
             return
         if re.search(self.FUJITSU_PACKET_REGEX, packet['mfr_data']):
             packet['hci'] = self.hci
-            publish.app.send_task('dreamhub.publisher.tasks.publish', [packet], queue='publisher')
+            publish_observation.app.send_task('dreamhub.publisher.tasks.publish_observation', [packet], queue='publisher')
         return # Default implementation does nothing!
 
 class PublishAll(DefaultDelegate):

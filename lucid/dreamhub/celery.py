@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 from celery import Celery
 from celery.signals import worker_ready
 
-from dreamhub.publisher.tasks import publish
+from dreamhub.publisher.tasks import publish_observation
 from dreamhub.sniffer.tasks import sniff
 #from dreamhub.publisher.tasks import publish
 #from dreamhub.sniffer.tasks import sniff

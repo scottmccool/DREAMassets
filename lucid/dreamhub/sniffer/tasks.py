@@ -20,7 +20,6 @@ import json
 import socket
 import os
 
-from dreamhub.publisher.tasks import publish
 from dreamhub.sniffer import ble_sniffer
 
 # Gather data from hub, it is assumed sniff will publish readings

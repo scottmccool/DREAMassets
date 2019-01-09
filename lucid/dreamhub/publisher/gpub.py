@@ -14,18 +14,18 @@ HUB_ID = socket.gethostname()
 # This replaces sobun publish method and conforms better to google cloud api docs
 # We send the observation as a utf-8 encoded string and set attributes as appropriate
 # @todo add batching logic
-def sendit(observation):
-    """ Publish a filtered observation to the cloud """
+def publish_message(msg, msg_type, topic=dreamconfig.GOOGLE_PUBSUB_TOPIC):
     try:
-        observation = json.dumps(observation).encode('utf-8')
+        msg = json.dumps(msg).encode('utf-8')
         publisher = pubsub_v1.PublisherClient()
-        topic_path = publisher.topic_path(dreamconfig.GOOGLE_PROJECT_ID, dreamconfig.GOOGLE_PUBSUB_TOPIC)
-        publisher.publish(topic_path, 
-            data=observation,
+        topic_path = publisher.topic_path(dreamconfig.GOOGLE_PROJECT_ID, topic)
+        publisher.publish(topic_path,
+            data=msg,
             hub_id=HUB_ID,
             hub_publisher_version=dreamconfig.VERSION,
-            hub_timestamp = str(time.time())
+            hub_timestamp = str(time.time()),
+            type = "observation"
         )
     except Exception as e:
-        print("Unable to publish data to Google Cloud due to error: {}".format(e))
+        print("Unable to publish message to Google Cloud due to error: {}".format(e))
         raise

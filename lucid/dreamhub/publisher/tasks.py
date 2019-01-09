@@ -6,10 +6,10 @@ from dreamhub.publisher import gpub
 
 #@app.task(base=Batches,flush_every=100, flush_interval=60)
 @shared_task
-def publish(payload):
-    p = str(payload)
+def publish_observation(observation):
+    p = str(observation)
     f = open("/tmp/dreamhub_publisher_readings","a")
     f.write(p)
     f.write("\n")
     f.close()
-    gpub.sendit(payload)
+    gpub.publish_message(observation,'observation')
